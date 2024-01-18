@@ -89,7 +89,7 @@ while True:
                             temp.count_exercise += int(edit_num[1:])
                         elif edit_num[0] == "-":
                             temp.count_exercise -= int(edit_num[1:])
-                if n1 == 2:
+                elif n1 == 2:
                     print("수정할 데이터를 입력해주세요")
                     edit_num = input("숫자만 입력시 그 숫자로, 기호 입력 증감")
                     if str.isdigit(edit_num):
@@ -99,6 +99,9 @@ while True:
                             temp.count_sleep += int(edit_num[1:])
                         elif edit_num[0] == "-":
                             temp.count_sleep -= int(edit_num[1:])
+                elif n1 == 3:
+                    edit_text = input("수정할 데이터를 입력해주세요\n")
+                    temp.text = edit_text
                 save_data(temp, "edit")
     elif select_menu == 3:
         pass
