@@ -26,9 +26,9 @@ def search_data(target_date):
     with open("media/molip_db.txt", 'r', encoding='utf8') as f:
         while True:
             current_data = f.readline()
-            current_data.strip()
             if current_data == "":
                 break
+            current_data.strip()
             temp = current_data.split("|")
             if temp[1] == target_date:
                 final_data = current_data
@@ -42,14 +42,15 @@ def save_data(target_molip_data, status):
 
 def str_to_molip_class(target_str):  #읽은 줄 가져와서 몰입 클래스로 바꿔줌
     temp_list = target_str.split("|")
-    date = dt.datetime.strptime(temp_list[1], target_str.time_format)
-    temp = Molip_row(date, int(temp_list[2]), int(temp_list[3]), temp_list[4])
+    date = dt.datetime.strptime(temp_list[1], Molip_row.time_format)
+    temp = Molip_row(date, int(temp_list[2]), int(temp_list[3]), temp_list[4][:-1])
     return temp
 
 if not os.path.isfile("media/molip_db.txt"):
     with open('media/molip_db.txt', 'w', encoding='utf8') as f:
         f.write("status|date|exercise|sleep|text\n")
         print("파일을 생성하였습니다.") 
+
 while True:
     select_menu = first_menu()
     if select_menu == 1:
@@ -72,12 +73,33 @@ while True:
         if temp == None:
             print("찾으시는 날짜는 아직 입력되지 않은 데이터입니다.")
         else:
-            print("수정하실 데이터를 선택해 주세요 \n 1. 운동\n2. 선잠\n3. 내용\n4. 취소")
+            temp = str_to_molip_class(temp)
+            print("수정하실 데이터를 선택해 주세요 \n1. 운동\n2. 선잠\n3. 내용\n4. 취소")
             n1 = int(input())
             if n1 == 4:
                 print("수정을 취소하셨습니다. \n 처음으로 돌아갑니다.")
-            elif n1 == 1:
-                pass
+            else:
+                if n1 == 1:
+                    print("수정할 데이터를 입력해주세요")
+                    edit_num = input("숫자만 입력시 그 숫자로, 기호 입력 증감")
+                    if str.isdigit(edit_num):
+                        temp.count_exercise = int(edit_num)
+                    else:
+                        if edit_num[0] == "+":
+                            temp.count_exercise += int(edit_num[1:])
+                        elif edit_num[0] == "-":
+                            temp.count_exercise -= int(edit_num[1:])
+                if n1 == 2:
+                    print("수정할 데이터를 입력해주세요")
+                    edit_num = input("숫자만 입력시 그 숫자로, 기호 입력 증감")
+                    if str.isdigit(edit_num):
+                        temp.count_sleep = int(edit_num)
+                    else:
+                        if edit_num[0] == "+":
+                            temp.count_sleep += int(edit_num[1:])
+                        elif edit_num[0] == "-":
+                            temp.count_sleep -= int(edit_num[1:])
+                save_data(temp, "edit")
     elif select_menu == 3:
         pass
     else :
