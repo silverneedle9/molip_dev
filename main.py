@@ -40,6 +40,12 @@ def save_data(target_molip_data, status):
         f.write(status + "|" + data_str + "\n")
     print("저장이 완료되었습니다.")
 
+def str_to_molip_class(target_str):  #읽은 줄 가져와서 몰입 클래스로 바꿔줌
+    temp_list = target_str.split("|")
+    date = dt.datetime.strptime(temp_list[1], target_str.time_format)
+    temp = Molip_row(date, int(temp_list[2]), int(temp_list[3]), temp_list[4])
+    return temp
+
 if not os.path.isfile("media/molip_db.txt"):
     with open('media/molip_db.txt', 'w', encoding='utf8') as f:
         f.write("status|date|exercise|sleep|text\n")
@@ -61,7 +67,17 @@ while True:
         else:
             print("이미 존재하는 데이터입니다.\n 수정메뉴를 이용해주세요.")
     elif select_menu == 2:
-        pass
+        to_find_data = input("찾으실 날짜를 입력하세요")
+        temp = search_data(to_find_data)
+        if temp == None:
+            print("찾으시는 날짜는 아직 입력되지 않은 데이터입니다.")
+        else:
+            print("수정하실 데이터를 선택해 주세요 \n 1. 운동\n2. 선잠\n3. 내용\n4. 취소")
+            n1 = int(input())
+            if n1 == 4:
+                print("수정을 취소하셨습니다. \n 처음으로 돌아갑니다.")
+            elif n1 == 1:
+                pass
     elif select_menu == 3:
         pass
     else :
