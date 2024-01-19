@@ -95,6 +95,8 @@ while True:
             input()
     elif select_menu == 3:
         to_find_data = input("찾으실 날짜를 입력하세요")
+        if to_find_data == "":
+            to_find_data = dt.datetime.strftime(dt.datetime.now(),Molip_row.time_format)
         temp = search_data(to_find_data)
         if temp == None:
             print("찾으시는 날짜는 아직 입력되지 않은 데이터입니다.")
