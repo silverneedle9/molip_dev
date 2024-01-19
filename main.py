@@ -41,6 +41,8 @@ def save_data(target_molip_data, status):
     print("저장이 완료되었습니다.")
 
 def str_to_molip_class(target_str):  #읽은 줄 가져와서 몰입 클래스로 바꿔줌
+    if target_str == None:
+        return None
     temp_list = target_str.split("|")
     date = dt.datetime.strptime(temp_list[1], Molip_row.time_format)
     temp = Molip_row(date, int(temp_list[2]), int(temp_list[3]), temp_list[4][:-1])
@@ -66,7 +68,7 @@ while True:
             text = input("기록 입력")
             save_data(Molip_row(new_date, exercise, sleep, text), 'new')
         else:
-            print("이미 존재하는 데이터입니다.\n 수정메뉴를 이용해주세요.")
+            print("이미 존재하는 데이터입니다.\n수정메뉴를 이용해주세요.")
     elif select_menu == 2:
         to_find_data = input("찾으실 날짜를 입력하세요")
         temp = search_data(to_find_data)
@@ -104,7 +106,22 @@ while True:
                     temp.text = edit_text
                 save_data(temp, "edit")
     elif select_menu == 3:
-        pass
+        date_for_print = input("기준일(금요일)의 날짜를 입력해주세요.(미입력시 오늘)\n입력하신 날짜를 기준으로 일주일의 데이터가 출력됩니다.\n")
+        if date_for_print == "":
+            date_for_print = dt.datetime.now()
+        else:
+            date_for_print = dt.datetime.strptime(date_for_print, Molip_row.time_format)
+        title = f"[몰입클럽]{((date_for_print - dt.datetime.strptime('2023-11-17', Molip_row.time_format)).days)//7 + 30}주차(2023-04-27,수능).txt"
+        path1 = "result/"
+        with open(path1 + title, 'w', encoding='utf8') as f:
+            f.write(title[:-4]+"\n")
+        for i in range(7,-1,-1):
+            temp = date_for_print - dt.timedelta(days=i)
+            temp = dt.datetime.strftime(temp, Molip_row.time_format)
+            with open(path1 + title, 'a', encoding='utf8') as f:
+                recode = search_data(temp)
+                if recode != None:
+                    f.write(str(str_to_molip_class(recode)))
     else :
         print("프로그램을 종료합니다.")
         break
