@@ -45,7 +45,6 @@ def check_date():
                 pass
             elif temp[1] not in result:
                 result.append(temp[1])
-    print(result)
     result.sort()
     return result
 
