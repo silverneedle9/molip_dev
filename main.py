@@ -72,20 +72,24 @@ while True:
     select_menu = first_menu()
     if select_menu == 1:
         new_date = input("생성할 날짜를 알려주세요. (미입력시 오늘)")
+        if new_date == "":
+            new_date = dt.datetime.strftime(dt.datetime.now(),Molip_row.time_format)
         if search_data(new_date) == None:
             print("데이터를 새로 작성합니다.")
             if new_date == "":
-                new_date = dt.datetime.now()
+                pass
             else:
                 new_date = dt.datetime.strptime(new_date, Molip_row.time_format)
             exercise = int(input("운동 :"))
             sleep = int(input("선잠 :"))
-            text = input("기록 입력")
+            text = input("기록 입력 :")
             save_data(Molip_row(new_date, exercise, sleep, text), 'new')
         else:
             print("이미 존재하는 데이터입니다.\n수정메뉴를 이용해주세요.")
     elif select_menu == 2:
         to_find_data = input("찾으실 날짜를 입력하세요")
+        if to_find_data == "":
+            to_find_data = dt.datetime.strftime(dt.datetime.now(),Molip_row.time_format)
         temp = search_data(to_find_data)
         if temp == None:
             print("찾으시는 날짜는 아직 입력되지 않은 데이터입니다.")
