@@ -10,10 +10,12 @@ def first_menu(): # 초기 메뉴 설정하는 함수 / 입력 받아서 선택�
             print("1. 새로 입력")
             print("2. 기존 데이터 수정")
             print("3. 출력")
-            print("4. 종료")
+            print("4. 데이터 삭제")
+            print("5. 전체 데이터 출력")
+            print("6. 종료")
             print("#" * 30)
             select_menu = int(input("원하시는 메뉴를 선택해주세요"))
-            if select_menu <=4 and select_menu >=1:
+            if select_menu <=6 and select_menu >=1:
                 return select_menu
             print("잘못 입력하셨습니다. 다시 입력해주세요")
     except:
@@ -33,6 +35,19 @@ def search_data(target_date):
             if temp[1] == target_date:
                 final_data = current_data
     return final_data
+
+def check_date():
+    result = []
+    with open("media/molip_db.txt", 'r', encoding='utf8') as f:
+        for i in f.readlines():
+            temp = i.split("|")
+            if temp[1] == "date":
+                pass
+            elif temp[1] not in result:
+                result.append(temp[1])
+    print(result)
+    result.sort()
+    return result
 
 def save_data(target_molip_data, status):
     with open('media/molip_db.txt', 'a', encoding='utf8') as f:
@@ -122,6 +137,26 @@ while True:
                 recode = search_data(temp)
                 if recode != None:
                     f.write(str(str_to_molip_class(recode)))
+    elif select_menu == 4:
+        del_date = input("데이터를 삭제할 날짜를 입력해주세요.\n")
+        db_data = []
+        with open("media/molip_db.txt", 'r', encoding='utf8') as f:
+            db_data = f.readlines()
+        
+        with open("media/molip_db.txt", 'w', encoding='utf8') as f:
+            for i in db_data:
+                temp = i.split("|")
+                if temp[1] != del_date:
+                    f.write(i)
+    elif select_menu == 5:
+        print("내용을 전체 출력합니다.")
+        date_list = check_date()
+        with open("result/all_data.txt", 'w', encoding='utf8') as f:
+            for i in date_list:
+                if i != None:
+                    t = str_to_molip_class(search_data(i))
+                    f.write(str(t))
+                    
     else :
         print("프로그램을 종료합니다.")
         break
