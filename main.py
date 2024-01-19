@@ -8,14 +8,15 @@ def first_menu(): # 초기 메뉴 설정하는 함수 / 입력 받아서 선택�
         while True:
             print("#" * 30)
             print("1. 새로 입력")
-            print("2. 기존 데이터 수정")
-            print("3. 출력")
-            print("4. 데이터 삭제")
-            print("5. 전체 데이터 출력")
-            print("6. 종료")
+            print("2. 데이터 확인")
+            print("3. 기존 데이터 수정")
+            print("4. 출력")
+            print("5. 데이터 삭제")
+            print("6. 전체 데이터 출력")
+            print("7. 종료")
             print("#" * 30)
             select_menu = int(input("원하시는 메뉴를 선택해주세요"))
-            if select_menu <=6 and select_menu >=1:
+            if select_menu <=7 and select_menu >=1:
                 return select_menu
             print("잘못 입력하셨습니다. 다시 입력해주세요")
     except:
@@ -90,6 +91,15 @@ while True:
             print("찾으시는 날짜는 아직 입력되지 않은 데이터입니다.")
         else:
             temp = str_to_molip_class(temp)
+            print(temp)
+            input()
+    elif select_menu == 3:
+        to_find_data = input("찾으실 날짜를 입력하세요")
+        temp = search_data(to_find_data)
+        if temp == None:
+            print("찾으시는 날짜는 아직 입력되지 않은 데이터입니다.")
+        else:
+            temp = str_to_molip_class(temp)
             print("수정하실 데이터를 선택해 주세요 \n1. 운동\n2. 선잠\n3. 내용\n4. 취소")
             n1 = int(input())
             if n1 == 4:
@@ -119,7 +129,7 @@ while True:
                     edit_text = input("수정할 데이터를 입력해주세요\n")
                     temp.text = edit_text
                 save_data(temp, "edit")
-    elif select_menu == 3:
+    elif select_menu == 4:
         date_for_print = input("기준일(금요일)의 날짜를 입력해주세요.(미입력시 오늘)\n입력하신 날짜를 기준으로 일주일의 데이터가 출력됩니다.\n")
         if date_for_print == "":
             date_for_print = dt.datetime.now()
@@ -136,7 +146,7 @@ while True:
                 recode = search_data(temp)
                 if recode != None:
                     f.write(str(str_to_molip_class(recode)))
-    elif select_menu == 4:
+    elif select_menu == 5:
         del_date = input("데이터를 삭제할 날짜를 입력해주세요.\n")
         db_data = []
         with open("media/molip_db.txt", 'r', encoding='utf8') as f:
@@ -147,7 +157,7 @@ while True:
                 temp = i.split("|")
                 if temp[1] != del_date:
                     f.write(i)
-    elif select_menu == 5:
+    elif select_menu == 6:
         print("내용을 전체 출력합니다.")
         date_list = check_date()
         with open("result/all_data.txt", 'w', encoding='utf8') as f:
