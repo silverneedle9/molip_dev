@@ -136,7 +136,7 @@ while True:
                     temp.text = edit_text
                 save_data(temp, "edit")
     elif select_menu == 4:
-        date_for_print = input("기준일(금요일)의 날짜를 입력해주세요.(미입력시 오늘)\n입력하신 날짜를 기준으로 일주일의 데이터가 출력됩니다.\n")
+        date_for_print = input("기준일의 날짜를 입력해주세요.(미입력시 오늘)\n입력하신 날짜를 기준으로 일주일의 데이터가 출력됩니다.\n")
         if date_for_print == "":
             date_for_print = dt.datetime.now()
         else:
@@ -145,7 +145,7 @@ while True:
         path1 = "result/"
         with open(path1 + title, 'w', encoding='utf8') as f:
             f.write(title[:-4]+"\n")
-        for i in range(7,-1,-1):
+        for i in range(6,-1,-1):
             temp = date_for_print - dt.timedelta(days=i)
             temp = dt.datetime.strftime(temp, Molip_row.time_format)
             with open(path1 + title, 'a', encoding='utf8') as f:
